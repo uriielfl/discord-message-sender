@@ -3,11 +3,26 @@
 # MessageSenderBot
 O MessageSenderBot é um bot para Discord que envia mensagens personalizadas para canais específicos do servidor. Ele carrega a configuração das mensagens a serem enviadas a partir de um arquivo config.json e executa o envio das mensagens. O bot também é capaz de lidar com erros ao enviar mensagens e registrar essas mensagens em arquivos de registro.
 
-- [Pular para Instalação](#instalação)
-- [Pular para Configuração](#configuração)
-- [Pular para Configuração](#projeto)
+- [Dependências](#dependências)
+- [Instalação](#instalação)
+- [Configuração](#configuração)
+- [Entendendo o projeto](#entendendo-o-projeto)
 
-## Instalação <a name="instalação"></a>
+## Dependências
+- aiohttp 3.8.6
+- aiosignal 1.3.1
+- async-timeout 4.0.3
+- attrs 23.1.0
+- charset-normalizer 3.3.2
+- discord.py 2.3.2
+- frozenlist 1.4.0
+- idna 3.4
+- multidict 6.0.4
+- python-dotenv 1.0.0
+- yarl 1.9.2
+
+
+## Instalação
 
 ### Criar venv:
 
@@ -35,7 +50,7 @@ foo@bar:~$ py -m pip install -r requirements.txt
 
 
 
-## Configuração <a name="configuração"></a>
+## Configuração
 
 Antes de usar o bot, você deve configurar o arquivo .env com o token do seu bot Discord e o config.json com as mensagens a serem enviadas.
 
@@ -59,7 +74,7 @@ As mensagens a serem enviadas são configuradas no arquivo config.json. Cada ent
 - **channel_id**: O ID do canal para o qual a mensagem será enviada.
 - **purge**: Um valor booleano que determina se as mensagens no canal devem ser apagadas antes de enviar a nova mensagem.
 
-## Entendendo o projeto <a name="projeto"></a>
+## Entendendo o projeto
 
 ### main.py
 O arquivo principal que contém a implementação do bot e a lógica para carregar configurações, enviar mensagens e gerenciar erros. Ele usa a biblioteca discord.py para interagir com a API do Discord.
@@ -75,6 +90,12 @@ Um módulo que fornece uma função write_json para adicionar mensagens aos arqu
 
 ## Uso
 Após configurar o arquivo .env, você pode iniciar o bot executando main.py. O bot lerá a configuração de mensagens em config.json e tentará enviá-las para os canais especificados no servidor Discord.
+
+```console
+foo@bar:~$ py -m main
+```
+
+Aí basta mandar a mensagem **"!enviarmsg"** em um canal em que o bot tenha acesso no servidor e ele enviará as mensagens nos canais configurados no **config.json**.
 
 ## Registro de Erros e Mensagens Sem Conteúdo
 Quando ocorrem erros durante o envio de mensagens ou quando uma mensagem não possui conteúdo para enviar, essas mensagens são registradas em arquivos de registro. Os arquivos de registro são **by_error.json** para mensagens com erros e **by_no_content.json** para mensagens sem conteúdo. Isso facilita a identificação e resolução de problemas.
