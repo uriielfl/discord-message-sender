@@ -8,6 +8,7 @@ from os.path import join, dirname
 
 from bcolors import BashColors, colored_print
 from channel import Channel
+from helpers.write import write_json
 
 dotenv_path = join(dirname(__file__), ".env")
 load_dotenv(dotenv_path)
@@ -86,6 +87,7 @@ class MessageSenderBot:
                 and not image_url
             ):
                 not_written_messages_channel_by_no_content.append(written_msg)
+                write_json("by_no_content.json", message_config)
                 return
             if description:
                 await channel.send(description)
@@ -103,10 +105,12 @@ class MessageSenderBot:
             written_messages_channel.append(written_msg)
             return
         except Exception as error:
-            print(
-                f'Erro ao enviar message: {message_config["message_id"]} ao canal {channel.name}'
+            colored_print(
+                f'Erro ao enviar message: {message_config["message_id"]} ao canal {channel.name}',
+                BashColors.WARNING,
             )
             not_written_messages_channel_by_error.append(written_msg)
+            write_json("by_error.json", message_config)
             return
 
     def run(self):
@@ -117,14 +121,10 @@ class MessageSenderBot:
         @bot.command(name="enviarmsg")
         async def send_msg(ctx):
             for message_config in self.config:
-                channel_id = int(message_config["channel_id"])
-                channel = ctx.guild.get_channel(channel_id)
-                print(message_config)
                 try:
                     await self.send_message(ctx, message_config)
 
                 except Exception as e:
-                    print(message_config)
                     colored_print(
                         f"Erro ao enviar mensagem:\n {str(e)}",
                         BashColors.FAIL,
